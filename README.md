@@ -1,11 +1,11 @@
-# Games Deals Notifier
+# Games Deals Notifier - best ever
 
 
-## Description
+## 😎 Description 😎
 
 GamesDeals is Discord bot build with discord.js. GamesDeals informs about games which price was reduced to 0. It uses https://www.reddit.com/r/GameDeals as a source. This repository is responsible for searching and notifying the API about new games.  
 
-## Installation
+## ⚙️ Installation ⚙️
 
 1. Configure [GamesDealsAPI](https://github.com/mikolajkalwa/GamesDealsAPI).
 2. Clone this repo,
@@ -17,6 +17,6 @@ GamesDeals is Discord bot build with discord.js. GamesDeals informs about games 
 
 1. `API_URL` for example http://localhost:8080
 
-## Licence 
+## 📝 Licence 📝
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
