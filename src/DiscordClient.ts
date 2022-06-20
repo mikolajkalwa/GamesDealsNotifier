@@ -23,6 +23,9 @@ export default class DiscordClient {
     const response = await this.client.request({
       path: `/api/webhooks/${webhook.id}/${webhook.token}?wait=true`,
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         content,
       }),
