@@ -1,13 +1,11 @@
-import got from 'got';
+import { request } from 'undici';
 import { Deal, Webhook } from './types/GamesDealsApi';
 
 export default class GamesDealsAPIClient {
   constructor(private readonly baseUrl: string) { }
 
   public isNewDeal = async (redditThreadIdentifier: string) => {
-    const response = await got.get(`${this.baseUrl}/deals/reddit/${redditThreadIdentifier}`, {
-      throwHttpErrors: false,
-    });
+    const response = await request(`${this.baseUrl}/deals/reddit/${redditThreadIdentifier}`);
 
     if (response.statusCode === 404) {
       return true;
@@ -16,13 +14,13 @@ export default class GamesDealsAPIClient {
   };
 
   public insertNewDeal = async (deal: Deal) => {
-    const respose = await got.post(`${this.baseUrl}/deals`, {
-      json: {
+    const respose = await request(`${this.baseUrl}/deals`, {
+      method: 'POST',
+      body: JSON.stringify({
         redditId: deal.id,
         redditTitle: deal.title,
         gameUrl: deal.url,
-      },
-      responseType: 'json',
+      }),
     });
 
     if (respose.statusCode === 201) {
@@ -32,7 +30,9 @@ export default class GamesDealsAPIClient {
   };
 
   public removeWebhook = async (webhook: Webhook) => {
-    const response = await got.delete(`${this.baseUrl}/webhooks/${webhook.id}`);
+    const response = await request(`${this.baseUrl}/webhooks/${webhook.id}`, {
+      method: 'DELETE',
+    });
 
     if (response.statusCode === 204) {
       return true;
@@ -41,5 +41,8 @@ export default class GamesDealsAPIClient {
     return false;
   };
 
-  public getAllWebhooks = async () => await got.get(`${this.baseUrl}/webhooks`).json<Webhook[]>();
+  public getAllWebhooks = async () => {
+    const response = await request(`${this.baseUrl}/webhooks`);
+    return await response.body.json() as Webhook[];
+  };
 }

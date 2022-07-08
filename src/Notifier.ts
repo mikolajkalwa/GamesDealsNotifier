@@ -1,5 +1,5 @@
-import got from 'got/dist/source';
 import { Logger } from 'pino';
+import { request } from 'undici';
 import DiscordClient from './DiscordClient';
 import GamesDealsAPIClient from './GamesDealsAPIClient';
 import { Deal, Webhook } from './types/GamesDealsApi';
@@ -115,14 +115,9 @@ Bad requests: ${executionResult.badRequestWebhooks.length}
 `;
     this.logger.info(content);
     if (webhookUrl) {
-      await got.post(webhookUrl, {
-        searchParams: {
-          wait: true,
-        },
-        json: {
-          content,
-        },
-        throwHttpErrors: false,
+      await request(`${webhookUrl}?wait=true`, {
+        body: JSON.stringify({ content }),
+        method: 'POST',
       });
     }
   };
