@@ -7,7 +7,7 @@ export default class RedditClient {
   constructor(private readonly baseUrl: string) { }
 
   public getTrendingDeals = async (): Promise<Deal[]> => {
-    const response = await request(`${this.baseUrl}/r/GameDeals/hot/.json?limit=3`);
+    const response = await request(`${this.baseUrl}/r/GameDeals/hot/.json?limit=3`, { maxRedirections: 4 });
     const data = await response.body.json() as unknown;
     const redditData: RedditResponse = RedditResponseSchema.parse(data);
 
