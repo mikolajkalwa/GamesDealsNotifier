@@ -16,6 +16,9 @@ export default class GamesDealsAPIClient {
   public insertNewDeal = async (deal: Deal) => {
     const respose = await request(`${this.baseUrl}/deals`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         redditId: deal.id,
         redditTitle: deal.title,
@@ -23,10 +26,10 @@ export default class GamesDealsAPIClient {
       }),
     });
 
-    if (respose.statusCode === 201) {
-      return true;
+    if (respose.statusCode !== 201) {
+      const message = await respose.body.text();
+      throw new Error(message);
     }
-    return false;
   };
 
   public removeWebhook = async (webhook: Webhook) => {

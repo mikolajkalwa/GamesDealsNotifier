@@ -40,10 +40,10 @@ export default class Notifier {
         return true;
       }
 
-      const blacklistInterection = webhook.blacklist.filter(
+      const blacklistIntersection = webhook.blacklist.filter(
         (keyword) => title.includes(keyword.toLowerCase()),
       );
-      if (blacklistInterection.length) {
+      if (blacklistIntersection.length) {
         return false;
       }
 
@@ -118,6 +118,9 @@ Bad requests: ${executionResult.badRequestWebhooks.length}
       await request(`${webhookUrl}?wait=true`, {
         body: JSON.stringify({ content }),
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
     }
   };
